@@ -3,7 +3,9 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-def search_articles(api_key, search_engine_id, query, num_results=10):
+def search_articles(query, num_results=10):
+    api_key = "AIzaSyDdgsglrtocaYOcA8V1s4Ad0Te9bsAwIYs"
+    search_engine_id = "d5e0315085b194afb"
     url = f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={search_engine_id}&q={query}&num={num_results}"
     response = requests.get(url)
     
@@ -23,7 +25,7 @@ def search_articles(api_key, search_engine_id, query, num_results=10):
 
 @app.route('/api/<string:param>', methods=['GET'])
 def get_request(param):
-    articles = search_articles(api_key, search_engine_id, param)
+    articles = search_articles( param)
     if articles:
         response = {
             'articles': articles
@@ -34,3 +36,6 @@ def get_request(param):
         }
     return jsonify(response)
 
+if __name__ == '__main__':
+    
+    app.run(debug=True,port=4000)
